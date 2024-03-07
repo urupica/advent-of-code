@@ -1,23 +1,22 @@
 #!/usr/bin/env python
 
 from argparse import ArgumentParser
+from datetime import date
 from pathlib import Path
 import shutil
 
 import browser_cookie3
 import requests
 
-
+current_year = date.today().year
 parser = ArgumentParser()
-parser.add_argument("year", choices=list(map(str, range(2015, 2023 + 1))))
 parser.add_argument("day", choices=list(map(str, range(1, 25 + 1))))
-
+parser.add_argument("year", nargs="?", choices=list(map(str, range(2015, current_year + 1))), default=str(current_year))
+parser.add_argument("-s", "--skip_input_download", action="store_true")
 args = parser.parse_args()
-year = args.year
-day = args.day
 
 # create directory
-path = Path(f"{year}/{day.zfill(2)}")
+path = Path(f"{args.year}/{args.day.zfill(2)}")
 path.mkdir(parents=True, exist_ok=True)
 
 # copy template
@@ -31,10 +30,11 @@ if not sample_path.is_file():
     open(sample_path, 'w').close()
 
 # download input file
-input_path = path / "input.txt"
-if not Path(input_path).is_file():
-    url = f"https://adventofcode.com/{year}/day/{day}/input"
-    cookies = browser_cookie3.chrome()
-    response = requests.get(url, cookies=cookies)
-    with open(input_path, "wb") as f:
-        f.write(response.content)
+if not args.skip_input_download:
+    input_path = path / "input.txt"
+    if not Path(input_path).is_file():
+        url = f"https://adventofcode.com/{args.year}/day/{args.day}/input"
+        cookies = browser_cookie3.load()
+        response = requests.get(url, cookies=cookies)
+        with open(input_path, "wb") as f:
+            f.write(response.content)
