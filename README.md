@@ -16,7 +16,7 @@ To prepare a challenge run
 
     (env) python prepare.py DAY [YEAR]  [--skip-input-download, -s]
 
-where `[YEAR]` defaults to the current year if not provided.
+where `YEAR` defaults to the current year if not provided.
 
 e.g.
 
