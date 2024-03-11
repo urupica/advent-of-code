@@ -14,9 +14,9 @@ def main(filename):
 
 
 if __name__ == "__main__":
-    for name in [
+    for input_filename in [
         "sample.txt",
         "input.txt"
     ]:
-        print(f"-- {name} --")
-        main(name)
+        print(f"-- {input_filename} --")
+        main(input_filename)
