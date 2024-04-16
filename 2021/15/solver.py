@@ -1,3 +1,6 @@
+import heapq
+
+
 def main(filename):
     with open(filename) as input_file:
         grid = [list(map(int, line.strip())) for line in input_file]
@@ -22,21 +25,28 @@ def main(filename):
                 grid.append(new_row)
 
         visited = set()
-        dist = {(0, 0): 0}
+        max_dist = sum(sum(row) for row in grid)
+        dist = {(i, j): max_dist for i in range(len(grid)) for j in range(len(grid[0]))}
+        dist[(0, 0)] = 0
+        heap = [(0, (0, 0))]
         while True:
-            i, j = min(set(dist) - visited, key=dist.get)
+            d, (i, j) = heapq.heappop(heap)
 
             if i == len(grid) - 1 and j == len(grid[0]) - 1:
-                result_part_1 = dist[(i, j)]
+                result_part_1 = d
                 break
 
             visited.add((i, j))
             for ii, jj in [(i - 1, j), (i + 1, j), (i, j - 1), (i, j + 1)]:
                 if 0 <= ii < len(grid) and 0 <= jj < len(grid[0]):
-                    if (ii, jj) not in dist:
-                        dist[(ii, jj)] = dist[(i, j)] + grid[ii][jj]
-                    else:
-                        dist[(ii, jj)] = min(dist[(ii, jj)], dist[(i, j)] + grid[ii][jj])
+                    old_d = dist[(ii, jj)]
+                    new_d = dist[(i, j)] + grid[ii][jj]
+                    if new_d < old_d:
+                        if (old_d, (ii, jj)) in heap:
+                            heap.remove((old_d, (ii, jj)))
+                        heapq.heapify(heap)
+                        heapq.heappush(heap, (new_d, (ii, jj)))
+                        dist[(ii, jj)] = new_d
 
         print(f"part {part}: {result_part_1}")
 
