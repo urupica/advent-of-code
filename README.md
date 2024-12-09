@@ -50,5 +50,4 @@ able to download the intput file using your browser cookies.
 To run the script you will need to install the following modules (ideally into a
 virtual environment):
 
-    (env) pip install browser-cookie3
-    (env) pip install requests
+    (env) pip install requests browser-cookie3
