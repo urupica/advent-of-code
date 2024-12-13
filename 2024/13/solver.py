@@ -11,7 +11,7 @@ def compute_tokens(prizes, fix_coordinates=False):
         det = a * d - b * c
         n = d * x - b * y
         m = -c * x + a * y
-        if n % det == 0 and m % det == 0:
+        if n % det == m % det == 0:
             tokens += 3 * n // det + m // det
     return tokens
 
