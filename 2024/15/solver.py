@@ -9,13 +9,25 @@ class Obstruction:
 
     def overlaps(self, other):
         if self.size == 1:
-            return (self.i, self.j) == (other.i, other.j)
-        return not {(self.i, self.j), (self.i, self.j + 1)}.isdisjoint({(other.i, other.j), (other.i, other.j + 1)})
+            return self.i == other.i and self.j == other.j
+        return self.i == other.i and abs(self.j - other.j) <= 1
 
-    def contains(self, coords):
+    def overlaps_after_move(self, other, direction):
+        other_i, other_j = {
+            "v": (other.i + 1, other.j),
+            "^": (other.i - 1, other.j),
+            ">": (other.i, other.j + 1),
+            "<": (other.i, other.j - 1),
+        }[direction]
         if self.size == 1:
-            return (self.i, self.j) == coords
-        return coords in {(self.i, self.j), (self.i, self.j + 1)}
+            return self.i == other_i and self.j == other_j
+        return self.i == other_i and abs(self.j - other_j) <= 1
+
+    def contains(self, coordinates):
+        i, j = coordinates
+        if self.size == 1:
+            return self.i == i and self.j == j
+        return self.i == i and self.j <= j <= self.j + 1
 
     def move(self, direction):
         if direction == "v":
@@ -26,16 +38,6 @@ class Obstruction:
             self.j += 1
         else:
             self.j -= 1
-
-    def move_copy(self, direction):
-        if direction == "v":
-            return Obstruction(self.i + 1, self.j, self.size)
-        elif direction == "^":
-            return Obstruction(self.i - 1, self.j, self.size)
-        elif direction == ">":
-            return Obstruction(self.i, self.j + 1, self.size)
-        else:
-            return Obstruction(self.i, self.j - 1, self.size)
 
     def copy(self):
         return Obstruction(self.i, self.j, self.size)
@@ -69,11 +71,10 @@ def simulate(walls, boxes, robot, movements, size):
             if box in visited:
                 continue
             visited.add(box)
-            box_next = box.move_copy(direction)
-            if any(wall.overlaps(box_next) for wall in walls):
+            if any(w.overlaps_after_move(box, direction) for w in walls):
                 can_move = False
                 break
-            for box_obstructing in [box for box in boxes if box.overlaps(box_next)]:
+            for box_obstructing in [b for b in boxes if b.overlaps_after_move(box, direction)]:
                 if box_obstructing not in pool and box_obstructing not in visited:
                     pool.append(box_obstructing)
         if can_move:
