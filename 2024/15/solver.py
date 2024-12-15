@@ -67,19 +67,19 @@ def simulate(walls, boxes, robot, movements):
         visited = set()
         can_move = True
         while pool:
-            box = pool.pop()
-            if box in visited:
+            current_box = pool.pop()
+            if current_box in visited:
                 continue
-            visited.add(box)
-            if any(w.overlaps_after_move(box, direction) for w in walls):
+            visited.add(current_box)
+            if any(wall.overlaps_after_move(current_box, direction) for wall in walls):
                 can_move = False
                 break
-            for box_obstructing in [b for b in boxes if b.overlaps_after_move(box, direction)]:
+            for box_obstructing in [box for box in boxes if box.overlaps_after_move(current_box, direction)]:
                 if box_obstructing not in pool and box_obstructing not in visited:
                     pool.append(box_obstructing)
         if can_move:
-            for box in visited:
-                box.move(direction)
+            for current_box in visited:
+                current_box.move(direction)
             robot = robot_next
 
 
