@@ -46,7 +46,7 @@ class Obstruction:
         return self.i * 100 + self.j
 
 
-def simulate(walls, boxes, robot, movements, size):
+def simulate(walls, boxes, robot, movements):
     for direction in movements:
         robot_next = {
             "v": (robot[0] + 1, robot[1]),
@@ -83,10 +83,6 @@ def simulate(walls, boxes, robot, movements, size):
             robot = robot_next
 
 
-def gps_sum(boxes):
-    return sum(100 * box.i + box.j for box in boxes)
-
-
 def main(filename):
     walls = []
     boxes = []
@@ -112,8 +108,8 @@ def main(filename):
                 movements += line
 
     boxes_copy = [box.copy() for box in boxes]
-    simulate(walls, boxes_copy, robot, movements, 1)
-    result_part_1 = gps_sum(boxes_copy)
+    simulate(walls, boxes_copy, robot, movements)
+    result_part_1 = sum(hash(box) for box in boxes_copy)
     print(f"part 1: {result_part_1}")
 
     for obj in boxes + walls:
@@ -121,8 +117,8 @@ def main(filename):
         obj.size = 2
     robot = (robot[0], robot[1] * 2)
 
-    simulate(walls, boxes, robot, movements, 2)
-    result_part_2 = gps_sum(boxes)
+    simulate(walls, boxes, robot, movements)
+    result_part_2 = sum(hash(box) for box in boxes)
     print(f"part 2: {result_part_2}")
 
 
