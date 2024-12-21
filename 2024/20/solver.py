@@ -50,16 +50,16 @@ def main(filename):
     if filename == "sample.txt":
         # check all sample values from the description
         print("verifying output data for part 1...")
-        for ps, save in [(64, 1), (40, 1), (38, 1), (36, 1), (20, 1), (12, 3), (10, 2), (8, 4), (6, 2), (4, 14), (2, 14)]:
-            a = count_cheats(grid, ps, 2)
-            b = count_cheats(grid, ps + 1, 2)
-            assert a - b == save, f"{ps}, {save}, {a}, {b}"
+        for min_save, cheats_expected in [(64, 1), (40, 1), (38, 1), (36, 1), (20, 1), (12, 3), (10, 2), (8, 4), (6, 2), (4, 14), (2, 14)]:
+            cheats_this = count_cheats(grid, min_save, 2)
+            cheats_next = count_cheats(grid, min_save + 1, 2)
+            assert cheats_this - cheats_next == cheats_expected
 
         print("verifying output data for part 2...")
-        for ps, save in [(76, 3), (74, 4), (72, 22), (70, 12), (68, 14), (66, 12), (64, 19), (62, 20), (60, 23), (58, 25), (56, 39), (54, 29), (52, 31), (50, 32)]:
-            a = count_cheats(grid, ps, 20)
-            b = count_cheats(grid, ps + 1, 20)
-            assert a - b == save, f"{ps}, {save}, {a}, {b}"
+        for min_save, cheats_expected in [(76, 3), (74, 4), (72, 22), (70, 12), (68, 14), (66, 12), (64, 19), (62, 20), (60, 23), (58, 25), (56, 39), (54, 29), (52, 31), (50, 32)]:
+            cheats_this = count_cheats(grid, min_save, 20)
+            cheats_next = count_cheats(grid, min_save + 1, 20)
+            assert cheats_this - cheats_next == cheats_expected
     else:
         result_part_1 = count_cheats(grid, 100, 2)
         print(f"part 1: {result_part_1}")
