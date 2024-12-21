@@ -31,7 +31,7 @@ def count_cheats(grid, min_save, max_cheat_length):
                 continue
             ds = dist_start[(i, j)]
             for ii in range(max(0, i - max_cheat_length), min(n, i + max_cheat_length + 1)):
-                for jj in range(max(0, j - max_cheat_length), min(n, j + max_cheat_length + 1)):
+                for jj in range(max(0, j - max_cheat_length), min(m, j + max_cheat_length + 1)):
                     if grid[ii][jj] == "#":
                         continue
                     d = abs(i - ii) + abs(j - jj)
