@@ -1,5 +1,4 @@
 import re
-from itertools import batched
 
 
 def get_row_column_numerical_keypad(key):
@@ -44,42 +43,42 @@ def move_to_numerical_keypad(current, target):
 
     if current_row == target_row:
         if current_col < target_col:
-            return [(">", target_col - current_col, "A", 1)]
+            return [((">", target_col - current_col), ("A", 1))]
         else:
-            return [("<", current_col - target_col, "A", 1)]
+            return [(("<", current_col - target_col), ("A", 1))]
     elif current_col == target_col:
         if current_row < target_row:
-            return [("v", target_row - current_row, "A", 1)]
+            return [(("v", target_row - current_row), ("A", 1))]
         else:
-            return [("^", current_row - target_row, "A", 1)]
+            return [(("^", current_row - target_row), ("A", 1))]
     else:
         if current_col < target_col:
             if current_row < target_row:
                 if current_col == 1 and target_row == 4:
-                    return [(">", target_col - current_col, "v", target_row - current_row, "A", 1)]
+                    return [((">", target_col - current_col), ("v", target_row - current_row), ("A", 1))]
                 else:
                     return [
-                        (">", target_col - current_col, "v", target_row - current_row, "A", 1),
-                        ("v", target_row - current_row, ">", target_col - current_col, "A", 1),
+                        ((">", target_col - current_col), ("v", target_row - current_row), ("A", 1)),
+                        (("v", target_row - current_row), (">", target_col - current_col), ("A", 1)),
                     ]
             else:
                 return [
-                    (">", target_col - current_col, "^", current_row - target_row, "A", 1),
-                    ("^", current_row - target_row, ">", target_col - current_col, "A", 1),
+                    ((">", target_col - current_col), ("^", current_row - target_row), ("A", 1)),
+                    (("^", current_row - target_row), (">", target_col - current_col), ("A", 1)),
                 ]
         else:
             if current_row < target_row:
                 return [
-                    ("<", current_col - target_col, "v", target_row - current_row, "A", 1),
-                    ("v", target_row - current_row, "<", current_col - target_col, "A", 1),
+                    (("<", current_col - target_col), ("v", target_row - current_row), ("A", 1)),
+                    (("v", target_row - current_row), ("<", current_col - target_col), ("A", 1)),
                 ]
             else:
                 if current_row == 4 and target_col == 1:
-                    return [("^", current_row - target_row, "<", current_col - target_col, "A", 1)]
+                    return [(("^", current_row - target_row), ("<", current_col - target_col), ("A", 1))]
                 else:
                     return [
-                        ("<", current_col - target_col, "^", current_row - target_row, "A", 1),
-                        ("^", current_row - target_row, "<", current_col - target_col, "A", 1),
+                        (("<", current_col - target_col), ("^", current_row - target_row), ("A", 1)),
+                        (("^", current_row - target_row), ("<", current_col - target_col), ("A", 1)),
                     ]
 
 
@@ -89,42 +88,42 @@ def move_to_directional_keypad(current, target):
 
     if current_row == target_row:
         if current_col < target_col:
-            return [(">", target_col - current_col, "A", 1)]
+            return [((">", target_col - current_col), ("A", 1))]
         else:
-            return [("<", current_col - target_col, "A", 1)]
+            return [(("<", current_col - target_col), ("A", 1))]
     elif current_col == target_col:
         if current_row < target_row:
-            return [("v", target_row - current_row, "A", 1)]
+            return [(("v", target_row - current_row), ("A", 1))]
         else:
-            return [("^", current_row - target_row, "A", 1)]
+            return [(("^", current_row - target_row), ("A", 1))]
     else:
         if current_col < target_col:
             if current_row < target_row:
                 return [
-                    (">", target_col - current_col, "v", target_row - current_row, "A", 1),
-                    ("v", target_row - current_row, ">", target_col - current_col, "A", 1),
+                    ((">", target_col - current_col), ("v", target_row - current_row), ("A", 1)),
+                    (("v", target_row - current_row), (">", target_col - current_col), ("A", 1)),
                 ]
             else:
                 if current_col == 1:
-                    return [(">", target_col - current_col, "^", current_row - target_row, "A", 1)]
+                    return [((">", target_col - current_col), ("^", current_row - target_row), ("A", 1))]
                 else:
                     return [
-                        (">", target_col - current_col, "^", current_row - target_row, "A", 1),
-                        ("^", current_row - target_row, ">", target_col - current_col, "A", 1),
+                        ((">", target_col - current_col), ("^", current_row - target_row), ("A", 1)),
+                        (("^", current_row - target_row), (">", target_col - current_col), ("A", 1)),
                     ]
         else:
             if current_row < target_row:
                 if target_col == 1:
-                    return [("v", target_row - current_row, "<", current_col - target_col, "A", 1)]
+                    return [(("v", target_row - current_row), ("<", current_col - target_col), ("A", 1))]
                 else:
                     return [
-                        ("<", current_col - target_col, "v", target_row - current_row, "A", 1),
-                        ("v", target_row - current_row, "<", current_col - target_col, "A", 1),
+                        (("<", current_col - target_col), ("v", target_row - current_row), ("A", 1)),
+                        (("v", target_row - current_row), ("<", current_col - target_col), ("A", 1)),
                     ]
             else:
                 return [
-                    ("<", current_col - target_col, "^", current_row - target_row, "A", 1),
-                    ("^", current_row - target_row, "<", current_col - target_col, "A", 1),
+                    (("<", current_col - target_col), ("^", current_row - target_row), ("A", 1)),
+                    (("^", current_row - target_row), ("<", current_col - target_col), ("A", 1)),
                 ]
 
 
@@ -139,13 +138,16 @@ def get_best_moves_directional_keypad():
                 if current == target:
                     continue
                 if level == 1:
-                    best_moves_directional_keypad[level][(current, target)] = min(sum(option[1::2]) for option in move_to_directional_keypad(current, target))
+                    best_moves_directional_keypad[level][(current, target)] = min(
+                        sum(step_count for _, step_count in option)
+                        for option in move_to_directional_keypad(current, target)
+                    )
                 else:
                     best = None
                     for option in move_to_directional_keypad(current, target):
                         prev = "A"
                         total = 0
-                        for step_dir, step_count in batched(option, 2):
+                        for step_dir, step_count in option:
                             total += best_moves_directional_keypad[level - 1][(prev, step_dir)] + step_count - 1
                             prev = step_dir
                         if best is None or total < best:
@@ -159,7 +161,7 @@ def get_best_move_numerical_keypad(best_moves_keypad, level, current, target):
     for option in move_to_numerical_keypad(current, target):
         prev = "A"
         total = 0
-        for step_dir, step_count in batched(option, 2):
+        for step_dir, step_count in option:
             total += best_moves_keypad[level][(prev, step_dir)] + step_count - 1
             prev = step_dir
         if best is None or total < best:
