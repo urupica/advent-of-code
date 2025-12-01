@@ -10,21 +10,28 @@ They are all written in Python.
 
 ## Challenge preparation script
 
+### Create virtual environment
+
+    python3.13 -m venv .venv
+    source .venv/bin/activate
+    (.venv) pip install -U pip
+    (.venv) pip install -U requirements.txt
+
 ### Running the script
 
 To prepare a challenge run
 
-    (env) python prepare.py DAY [YEAR]  [--skip-input-download, -s]
+    (.env) python prepare.py DAY [YEAR]  [--skip-input-download, -s]
 
 where `YEAR` defaults to the current year if not provided.
 
 e.g.
 
-    (env) python prepare.py 7 2018
+    (.env) python prepare.py 7 2018
 
 for challenge day 7 of 2018 or 
 
-    $ (env) python prepare.py 16
+    $ (.env) python prepare.py 16
 
 for Challenge 16 of the current year,
 
@@ -50,4 +57,4 @@ able to download the intput file using your browser cookies.
 To run the script you will need to install the following modules (ideally into a
 virtual environment):
 
-    (env) pip install requests browser-cookie3
+    (.env) pip install requests browser-cookie3
