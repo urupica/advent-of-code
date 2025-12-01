@@ -34,7 +34,8 @@ if not args.skip_input_download:
     input_path = path / "input.txt"
     if not Path(input_path).is_file():
         url = f"https://adventofcode.com/{args.year}/day/{args.day}/input"
-        cookies = browser_cookie3.load()
+        # you can also use another browser like .firefox(). Or try load the cookies of all browsers using .load()
+        cookies = browser_cookie3.chrome(domain_name="adventofcode.com")
         response = requests.get(url, cookies=cookies)
         with open(input_path, "wb") as f:
             f.write(response.content)
