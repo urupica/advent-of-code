@@ -12,7 +12,7 @@ def solve(filename):
 
     max_area = 0
     max_area_inside = 0
-    for i, ((x1, y1), (x2, y2)) in enumerate(combinations(tiles, 2)):
+    for (x1, y1), (x2, y2) in combinations(tiles, 2):
         x1, x2 = min(x1, x2), max(x1, x2)
         y1, y2 = min(y1, y2), max(y1, y2)
         area = (x2 + 1 - x1) * (y2 + 1 - y1)
