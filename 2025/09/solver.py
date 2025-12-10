@@ -6,10 +6,7 @@ def solve(filename):
     with open(filename) as input_file:
         tiles = [tuple(map(int, line.strip().split(","))) for line in input_file]
 
-    # close the loop and create a polygon
-    tiles.append(tiles[-1])
     polygon = Polygon(tiles)
-
     max_area = 0
     max_area_inside = 0
     for (x1, y1), (x2, y2) in combinations(tiles, 2):
