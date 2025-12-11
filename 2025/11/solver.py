@@ -1,31 +1,26 @@
-mem = {}
-def count_paths_1(neigh, v):
+from functools import cache
+
+neigh = {}
+
+@cache
+def count_paths_1(v):
     if v == "out":
         return 1
     if v not in neigh:
         return 0
-    if v in mem:
-        return mem[v]
-    ret = sum(count_paths_1(neigh, w) for w in neigh[v])
-    mem[v] = ret
-    return ret
+    return sum(count_paths_1(w) for w in neigh[v])
 
-
-def count_paths_2(neigh, v, visited_dac, visited_fft):
+@cache
+def count_paths_2(v, visited_dac=False, visited_fft=False):
     if v == "out":
         return int(visited_dac and visited_fft)
     if v not in neigh:
         return 0
-    if (v, visited_dac, visited_fft) in mem:
-        return mem[(v, visited_dac, visited_fft)]
-    ret = sum(count_paths_2(neigh, w, visited_dac or v == "dac", visited_fft or v == "fft") for w in neigh[v])
-    mem[(v, visited_dac, visited_fft)] = ret
-    return ret
+    return sum(count_paths_2(w, visited_dac or v == "dac", visited_fft or v == "fft") for w in neigh[v])
 
 
 def solve(filename):
-    global mem
-    neigh = {}
+    neigh.clear()
     with open(filename) as input_file:
         for line in input_file:
             line = line.strip()
@@ -33,13 +28,13 @@ def solve(filename):
             neigh[source] = tuple(target.strip() for target in targets.split())
 
     if filename in ["sample.txt", "input.txt"]:
-        mem = {}
-        result_part_1 = count_paths_1(neigh, "you")
+        count_paths_1.cache_clear()
+        result_part_1 = count_paths_1("you")
         print(f"part 1: {result_part_1}")
 
     if filename in ["sample2.txt", "input.txt"]:
-        mem = {}
-        result_part_2 = count_paths_2(neigh, "svr", False, False)
+        count_paths_2.cache_clear()
+        result_part_2 = count_paths_2("svr")
         print(f"part 2: {result_part_2}")
 
 
